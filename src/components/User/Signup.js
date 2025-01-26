@@ -1,53 +1,69 @@
 import React, { useState } from "react";
 import styles from "./Signup.module.css";
+import { Input, Button } from "antd";
+import { useNavigate } from "react-router-dom";
+import { signup } from "../../services/service"; // Import the signup function
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNo, setMobileNo] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignup = (e) => {
-    e.preventDefault();
-    // Handle signup logic here
+  const handleSignupClick = async () => {
+    const userData = { name, email, mobileNo, password }; // Ensure payload matches schema
+    try {
+      const response = await signup(userData);
+      console.log('Signup successful:', response);
+      localStorage.setItem("jwtToken", response.token); // Store JWT token in local storage
+      navigate("/store"); // Navigate to store page on successful signup
+    } catch (error) {
+      console.error('Signup failed:', error);
+      // Handle signup failure (e.g., show error message)
+    }
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login");
   };
 
   return (
-    <form onSubmit={handleSignup} className={styles.formContainer}>
-      <div className={styles.row}>
-        <label>Name:</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+    <div className={styles.signupWrapper}>
+      <div className={styles.signupContainer}>
+        <div className={styles.inputRow}>
+          <label style={{ width: "170px" }}>Name</label>
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
+        </div>
+        <div className={styles.inputRow}>
+          <label style={{ width: "170px" }}>Email</label>
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+        </div>
+        <div className={styles.inputRow}>
+          <label style={{ width: "170px" }}>Mobile No</label>
+          <Input
+            value={mobileNo}
+            onChange={(e) => setMobileNo(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputRow}>
+          <label style={{ width: "170px" }}>Password</label>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className={styles.signupButtonRow}>
+          <Button type="primary" onClick={handleSignupClick}>
+            Signup
+          </Button>
+          <Button type="primary" onClick={handleLoginClick}>
+            login
+          </Button>
+        </div>
       </div>
-      <div className={styles.row}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className={styles.row}>
-        <label>Mobile No:</label>
-        <input
-          type="text"
-          value={mobileNo}
-          onChange={(e) => setMobileNo(e.target.value)}
-        />
-      </div>
-      <div className={styles.row}>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <button type="submit">Signup</button>
-    </form>
+    </div>
   );
 };
 

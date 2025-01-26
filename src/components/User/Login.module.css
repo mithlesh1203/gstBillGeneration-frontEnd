@@ -1,37 +1,24 @@
-.formContainer {
+.loginWrapper {
+  margin-top: 20px; /* Removed quotes */
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+}
+.loginContainer {
+  justify-content: center;
+  height: 300px;
+  width: 500px;
+  border: 3px solid black; /* Added solid black border */
+  padding: 20px; /* Added padding for inner item margin */
+}
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Optional: Adds space between the label and input */
+  margin-top: 10px; /* Added margin-top */
+}
+.loginButtonRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Added margin-top */
   gap: 10px;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-}
-
-.error-message {
-  color: red;
-  font-size: 12px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.submit-button, .signup-button {
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.signup-button {
-  background-color: #f0f0f0;
 }
