@@ -1,17 +1,24 @@
 import React from "react";
 import { Layout, Button } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
-import { logout } from "../../actions/authActions"; // Assuming you have an authActions file
 import styles from "./TopNav.module.css";
+import { logout } from "../../services/service";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Header, Content } = Layout;
 
 const TopNav = ({ collapsed, setCollapsed }) => {
-  const user = true; // Assuming you have an auth state
+  const navigate = useNavigate(); // Initialize navigate
+  const user = localStorage.getItem("jwtToken"); // Check if user is authenticated
 
-  // const handleLogout = () => {
-  //     dispatch(logout());
-  // };
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login"); // Redirect to login page after logout
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <Layout>
@@ -32,10 +39,10 @@ const TopNav = ({ collapsed, setCollapsed }) => {
           {user ? (
             <div className={styles.userProfile}>
               <span>{user.name}</span>
-              <Button onClick={"handleLogout"}>Logout</Button>
+              <Button onClick={handleLogout}>Logout</Button>
             </div>
           ) : (
-            <Button>Login</Button>
+            <Button onClick={() => navigate("/login")}>Login</Button>
           )}
         </div>
       </Header>
